@@ -1,8 +1,12 @@
-import jose
+import logging
+from datetime import datetime, timedelta
+
+from jose import jwt, JWTError
 from passlib.context import CryptContext
 from starlette.exceptions import HTTPException
 from starlette import status
 
+from app.backend.configurations import settings
 from app.backend.users.dao import UsersDAO
 from app.backend.users.models import Users
 
@@ -19,8 +23,22 @@ def verify_password(for_checking: str, hashed_pass: str) -> bool:
     return pass_context.verify(for_checking, hashed_pass)
 
 
+def generate_token(data: dict):
+    """Generate JWT token """
+    to_encode = {"sub_info": data.copy()}
+    expire_on = datetime.utcnow() + timedelta(minutes=60)  # Optional
+    to_encode.update({"expiration": str(expire_on)})
+    encoded_jwt_token = jwt.encode(
+        to_encode,
+        key=settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM,
+    )
+    logging.info("Token created successfully")
+    return encoded_jwt_token
+
+
 async def authenticate_user(username: str, password: str) -> bool | None:
-    """Checks if the current user exists, and if it does, checks the password field.
+    """Checks if the current user exists, and if he does, checks the password field.
     Takes the found existing user before from the database and compares his hashed password with the  given in the function
     """
     user: Users | None = await UsersDAO.get_by_name(username)
