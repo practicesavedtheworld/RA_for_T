@@ -15,6 +15,7 @@ def create_hashed_password(user_pass: str) -> str:
 
 
 def verify_password(for_checking: str, hashed_pass: str) -> bool:
+    # TODO handle this with logging
     return pass_context.verify(for_checking, hashed_pass)
 
 
@@ -29,3 +30,4 @@ async def authenticate_user(username: str, password: str) -> bool | None:
     ):
         # TODO add custom exception
         raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED)
+    return True
