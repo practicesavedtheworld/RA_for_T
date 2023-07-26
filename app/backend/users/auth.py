@@ -19,6 +19,9 @@ def verify_password(for_checking: str, hashed_pass: str) -> bool:
 
 
 async def authenticate_user(username: str, password: str) -> bool | None:
+    """Checks if the current user exists, and if it does, checks the password field.
+    Takes the found existing user before from the database and compares his hashed password with the  given in the function
+    """
     user: Users | None = await UsersDAO.get_by_name(username)
     if not user or not verify_password(
             for_checking=password,
