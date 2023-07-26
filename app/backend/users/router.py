@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from starlette.responses import Response
 
-from app.backend.users.auth import create_hashed_password, authenticate_user
+from app.backend.users.auth import create_hashed_password, authenticate_user, generate_token
 from app.backend.users.dao import UsersDAO
 from app.backend.users.schemas import UsersScheme
 
@@ -36,5 +36,12 @@ async def login(abc_user: UsersScheme, response: Response):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
         )
-    user_passed_validation = await authenticate_user(user_exist.username, abc_user.non_hashed_password)
+    user_passed_validation: bool = await authenticate_user(user_exist.username, abc_user.non_hashed_password)
+    if user_passed_validation:
+        user_token = generate_token({"sub": user_exist.id})
+        response.set_cookie(
+            'targets_user_token',
+            user_token,
+            httponly=True,
+        )
     return "EST", user_passed_validation
