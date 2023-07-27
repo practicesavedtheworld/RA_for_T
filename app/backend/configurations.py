@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     DB_PORT: int
     DB_NAME: str
     DB_URL: str | None = None
+    SECRET_KEY: str
+    ALGORITHM: str
 
     model_config = SettingsConfigDict(env_file=[f'{BASE_DIR}/fake_env_file.txt', f'{BASE_DIR}/.env'])
 
