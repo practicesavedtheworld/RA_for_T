@@ -26,3 +26,8 @@ class WrongUsernameOrPassword(BaseUserException):
 class UsernameAlreadyTaken(BaseUserException):
     details = 'Username already taken by another user. Choose another'
     exception_status_code = status.HTTP_409_CONFLICT
+
+
+class ConnectionErrorOrBadRequest(BaseUserException):
+    details = 'Could not get access to request object'
+    exception_status_code = status.HTTP_400_BAD_REQUEST
