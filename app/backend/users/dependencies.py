@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime as dt
 from typing import TypeAlias
 
@@ -5,6 +6,7 @@ from fastapi import Depends
 from jose import jwt, JWTError
 from starlette.requests import Request
 
+from app.backend.app_logging import create_logger
 from app.backend.configurations import settings
 from app.backend.users.dao import UsersDAO
 from app.backend.users.exceptions import (
@@ -16,6 +18,11 @@ from app.backend.users.exceptions import (
 from app.backend.users.models import Users
 
 Token: TypeAlias = str
+dependencies_logger = create_logger(
+    level=logging.ERROR,
+    file_name='critical&error.log',
+    loger_name='dependencies_logger'
+)
 
 
 def get_user_token(request: Request) -> Token:
@@ -27,8 +34,7 @@ def get_user_token(request: Request) -> Token:
             raise TokenClosedOrNeverExisted
         return token
     except (AttributeError, NameError):
-        # log that
-
+        dependencies_logger.error(f"[{get_user_token.__name__}]\t Could not get token from request")
         raise ConnectionErrorOrBadRequest
 
 
@@ -39,21 +45,22 @@ async def get_current_user(token: Token = Depends(get_user_token)) -> Users:
            2) Token existence (if secret key or algo are wrongs - token does not exist)
            3) Token bounding with user"""
 
-    decoded_jwt_token, token_expiration = dict, ''
     try:
         decoded_jwt_token = jwt.decode(token, key=settings.SECRET_KEY, algorithms=settings.ALGORITHM)
         token_expiration: str = decoded_jwt_token.get("expiration")
     except JWTError:
+        dependencies_logger.error(
+            f"[{get_current_user.__name__}]\t Someone tried to login with an old token or re-login required",
+        )
         raise TokenClosedOrNeverExisted
 
     time_at_this_moment: float = dt.utcnow().timestamp()
     if not decoded_jwt_token or dt.strptime(token_expiration, "%Y-%m-%d %H:%M:%S.%f").timestamp() < time_at_this_moment:
         raise TokenTimeoutOrWrongSecrets
-        #  Logg and raise ex
 
     user_id: str = decoded_jwt_token.get("sub")
     user: Users = await UsersDAO.get_by_user_id(int(user_id))
     if not user_id or not user:
+        dependencies_logger.error(f" User not found or deleted while token is still alive")
         raise NoUserFound
-        # user doesnt exist + log
     return user
