@@ -11,7 +11,7 @@ def create_logger(loger_name: str, file_name: str = None, level: int = 10):
     logger_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(funcName)s - %(message)s')
 
     if file_name:
-        handler = logging.FileHandler(filename=file_name if file_name else __file__, encoding='UTF-8')
+        handler = logging.FileHandler(filename=file_name, encoding='UTF-8')
     else:
         handler = logging.StreamHandler(stream=sys.stdout)
     handler.setFormatter(logger_formatter)
