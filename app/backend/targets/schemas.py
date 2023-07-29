@@ -15,3 +15,7 @@ class DetailedTarget(RawTarget):
 
 class UpdatedTarget(DetailedTarget):
     updated_at: datetime
+
+
+class DeletedTarget(UpdatedTarget):
+    deleted_at: datetime
