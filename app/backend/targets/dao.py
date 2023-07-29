@@ -7,7 +7,7 @@ from sqlalchemy import select, Result, update
 
 from app.backend.app_logging import create_logger
 from app.backend.dao.dao import BaseDAO
-from app.backend.targets.exception import NoTargetFound
+from app.backend.targets.exceptions import NoTargetFound
 from app.backend.targets.models import Targets
 from app.backend.targets.schemas import DetailedTarget, RawTarget, UpdatedTarget
 
@@ -23,12 +23,12 @@ class TargetsDAO(BaseDAO):
     current_model = Targets
 
     @staticmethod
-    def database_result_validator(critical: bool = False):
+    def database_result_validator(critical: bool = False) -> Callable:
         """See that the returned object from the database is useless to the user.
         If it is, log that or throw an exception, depends on critical attribute"""
 
-        def validator(dao_func: Callable):
-            async def wrapper(*args: P.args, **kwargs: P.kwargs):
+        def validator(dao_func: Callable) -> Callable[P, RESULT_FROM_DB]:
+            async def wrapper(*args: P.args, **kwargs: P.kwargs) -> RESULT_FROM_DB:
                 dao_func_result: RESULT_FROM_DB = await dao_func(*args, **kwargs)
                 if not RESULT_FROM_DB and critical:
                     raise NoTargetFound
@@ -82,11 +82,13 @@ class TargetsDAO(BaseDAO):
         """
 
         async with cls.session_ as session:
-            select_query = select(Targets.id,
-                                  Targets.title,
-                                  Targets.description,
-                                  Targets.status,
-                                  Targets.created_at).filter_by(id=target_id)
+            select_query = select(
+                Targets.id,
+                Targets.title,
+                Targets.description,
+                Targets.status,
+                Targets.created_at,
+            ).filter_by(id=target_id)
             query_result: Result = await session.execute(select_query)
 
             #  Set Result as a  pydantic schemas
@@ -101,11 +103,13 @@ class TargetsDAO(BaseDAO):
         As a result, it includes only 5 fields required by the assignment"""
 
         async with cls.session_ as session:
-            query = select(Targets.id,
-                           Targets.title,
-                           Targets.description,
-                           Targets.status,
-                           Targets.created_at).where(Targets.user_id == id_).limit(limit)
+            query = select(
+                Targets.id,
+                Targets.title,
+                Targets.description,
+                Targets.status,
+                Targets.created_at,
+            ).where(Targets.user_id == id_).limit(limit)
             query_result: Result = await session.execute(query)
 
             #  Set Result as a list of pydantic schemas
