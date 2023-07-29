@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, Path
 
 from app.backend.targets.dao import TargetsDAO
-from app.backend.targets.schemas import RawTarget, DetailedTarget, UpdatedTarget
+from app.backend.targets.schemas import RawTarget, DetailedTarget, UpdatedTarget, DeletedTarget
 from app.backend.users.dependencies import get_current_user
 from app.backend.users.models import Users
 
@@ -60,6 +60,7 @@ async def update_task(
 async def remove_task(
         task_id: Annotated[int, Path(gt=0)],
         user: Users = Depends(get_current_user),
-):
+) -> DeletedTarget:
     """Removes chosen task for specific user"""
+
     return await TargetsDAO.delete_task_by_task_id(task_id=task_id, user_id=user.id)
