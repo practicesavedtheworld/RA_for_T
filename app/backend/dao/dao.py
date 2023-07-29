@@ -1,8 +1,12 @@
-from app.backend.database import asynch_session, Base
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, insert, delete
+from typing import TypeAlias
 
+from sqlalchemy import select, insert, delete
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.backend.database import asynch_session, Base
 from app.backend.users.exceptions import NoUserFound
+
+SUCCESS_OR_FAILED: TypeAlias = str
 
 
 class BaseDAO:
@@ -10,12 +14,12 @@ class BaseDAO:
     session_: AsyncSession = asynch_session()
 
     @classmethod
-    async def add(cls, **model_data):
+    async def add(cls, **model_data) -> SUCCESS_OR_FAILED:
         async with cls.session_ as session:
             add_query = insert(cls.current_model).values(**model_data).returning(cls.current_model.id)
             post_query_res: id = await session.execute(add_query)
             await session.commit()
-            return post_query_res.scalar()
+            return "Success! Now you can login" if post_query_res else "Failed! Try again"
 
     @classmethod
     async def get_by_user_id(cls, user_id: int) -> current_model:

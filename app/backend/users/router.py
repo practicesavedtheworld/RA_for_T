@@ -1,3 +1,5 @@
+from typing import TypeAlias
+
 from fastapi import APIRouter, HTTPException, status, Depends
 from starlette.responses import Response
 
@@ -12,28 +14,27 @@ router = APIRouter(
     prefix='/users',
     tags=['Auth & Users'],
 )
+USER_ID: TypeAlias = int
 
 
 @router.post('/register')
-async def new_user_registration(user: UsersScheme):
+async def new_user_registration(user: UsersScheme) -> str:
     """Creates new user if user with this username does not exist.
     Store in db hashed password"""
 
     user_exist = await UsersDAO.get_by_name(user.username)
-    if not user_exist:
-        hashed_pass = create_hashed_password(user.non_hashed_password)
-        await UsersDAO.add(username=user.username, hashed_password=hashed_pass)
-    else:
+    if user_exist:
         raise UsernameAlreadyTaken
+    hashed_pass = create_hashed_password(user.non_hashed_password)
+    return await UsersDAO.add(username=user.username, hashed_password=hashed_pass)
 
 
 @router.post('/login')
-async def login(abc_user: UsersScheme, response: Response):
+async def login(abc_user: UsersScheme, response: Response) -> USER_ID:
     """Add token for user if user pass the authentication & authorisation"""
 
     user_exist = await UsersDAO.get_by_name(abc_user.username)
     if not user_exist:
-        # TODO add custom exp
         raise WrongUsernameOrPassword
 
     user_that_passed_validation: bool = await authenticate_user(user_exist.username, abc_user.non_hashed_password)
@@ -44,9 +45,11 @@ async def login(abc_user: UsersScheme, response: Response):
             user_token,
             httponly=True,
         )
-    return user_that_passed_validation
+    return user_exist.id
 
 
 @router.post('/me')
-async def myself(user: Users = Depends(get_current_user)):
-    return user
+async def myself(user: Users = Depends(get_current_user)) -> dict:
+    """Return to client user info without hashed password"""
+
+    return {"id": user.id, "username": user.username}
