@@ -16,6 +16,3 @@ class UsersDAO(BaseDAO):
             query_res = await session.execute(user)
             user_model: Users = query_res.scalar_one_or_none()
             return user_model
-
-
-

@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 
 
 class BaseUserException(HTTPException):
-    details = ''
+    details = ""
     exception_status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
     def __init__(self):

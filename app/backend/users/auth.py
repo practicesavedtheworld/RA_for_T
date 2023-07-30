@@ -10,7 +10,7 @@ from app.backend.users.dao import UsersDAO
 from app.backend.users.exceptions import WrongUsernameOrPassword
 from app.backend.users.models import Users
 
-pass_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+pass_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def create_hashed_password(user_pass: str) -> str:
@@ -25,7 +25,7 @@ def verify_password(for_checking: str, hashed_pass: str) -> bool:
 
 
 def generate_token(data: dict):
-    """Generate JWT token """
+    """Generate JWT token"""
     to_encode = data.copy()
     expire_on = datetime.utcnow() + timedelta(minutes=60)  # Optional
     to_encode.update({"expiration": str(expire_on)})
@@ -44,12 +44,12 @@ def generate_token(data: dict):
 
 async def authenticate_user(username: str, password: str) -> bool | None:
     """Checks if the current user exists, and if he does, checks the password field.
-    Takes the found existing user before from the database and compares his hashed password with the  given in the function
+    Takes the found existing user before from the database and compares his hashed
+    password with the  given in the function
     """
     user: Users | None = await UsersDAO.get_by_name(username)
     if not user or not verify_password(
-            for_checking=password,
-            hashed_pass=user.hashed_password
+        for_checking=password, hashed_pass=user.hashed_password
     ):
         # TODO add custom exception
         raise WrongUsernameOrPassword

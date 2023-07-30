@@ -5,10 +5,10 @@ from app.backend.database import Base
 
 
 class Users(Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id: Mapped[int] = Column(primary_key=True, nullable=False)
     username: Mapped[str] = Column(type_=String(50))
     hashed_password: Mapped[str]
 
-    targets = relationship('Targets', back_populates='user')
+    targets = relationship("Targets", back_populates="user")

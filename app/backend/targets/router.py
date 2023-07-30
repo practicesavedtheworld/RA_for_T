@@ -3,20 +3,27 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Path
 
 from app.backend.targets.dao import TargetsDAO
-from app.backend.targets.schemas import (DeletedTarget, DetailedTarget,
-                                         RawTarget, UpdatedTarget)
+from app.backend.targets.schemas import (
+    DeletedTarget,
+    DetailedTarget,
+    RawTarget,
+    UpdatedTarget,
+)
 from app.backend.users.dependencies import get_current_user
 from app.backend.users.models import Users
 
 router = APIRouter(
-    prefix='/tasks',
-    tags=['TASKS(TARGETS)'],
+    prefix="/tasks",
+    tags=["TASKS(TARGETS)"],
 )
 
 
-@router.post('')
-async def new_task(raw_task: RawTarget, user: Users = Depends(get_current_user)) -> DetailedTarget:
-    """Adds to db required basic task(target) info(raw_task). Return to the client more detailed task(target)"""
+@router.post("")
+async def new_task(
+    raw_task: RawTarget, user: Users = Depends(get_current_user)
+) -> DetailedTarget:
+    """Adds to db required basic task(target) info(raw_task).
+    Return to the client more detailed task(target)"""
 
     user_id = user.id
     added_task_id = await TargetsDAO.add(
@@ -29,27 +36,24 @@ async def new_task(raw_task: RawTarget, user: Users = Depends(get_current_user))
     return res
 
 
-@router.get('')
+@router.get("")
 async def my_tasks(
-        user: Users = Depends(get_current_user),
-        limit: Annotated[
-            int,
-            Path(
-                title="Limit for returning task",
-                gt=-1
-            ),
-        ] = 20,
+    user: Users = Depends(get_current_user),
+    limit: Annotated[
+        int,
+        Path(title="Limit for returning task", gt=-1),
+    ] = 20,
 ) -> list[DetailedTarget]:
-    """Gets all specific user tasks(targets).
-    Default it returns 20 tasks, but it's changeable on the client side and cannot be negative"""
+    """Gets all specific user tasks(targets). Default it returns 20 tasks, but
+    it's changeable on the client side and cannot be negative"""
 
     return await TargetsDAO.find_all_by_id(user.id, limit=limit)
 
 
-@router.put('/{task_id}')
+@router.put("/{task_id}")
 async def update_task(
-        task_id: Annotated[int, Path(gt=0)],
-        raw_target: RawTarget,
+    task_id: Annotated[int, Path(gt=0)],
+    raw_target: RawTarget,
 ) -> UpdatedTarget:
     """Updates task and return task info with additional field (updated_at)"""
 
@@ -57,10 +61,10 @@ async def update_task(
     return updating_task_scheme_result
 
 
-@router.delete('/{task_id}')
+@router.delete("/{task_id}")
 async def remove_task(
-        task_id: Annotated[int, Path(gt=0)],
-        user: Users = Depends(get_current_user),
+    task_id: Annotated[int, Path(gt=0)],
+    user: Users = Depends(get_current_user),
 ) -> DeletedTarget:
     """Removes chosen task for specific user"""
 

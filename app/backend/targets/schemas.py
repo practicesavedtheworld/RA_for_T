@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 class RawTarget(BaseModel):
     title: str = Field(max_length=150)
     description: str = Field(max_length=300)
-    status: str = Field(default='new')
+    status: str = Field(default="new")
 
 
 class DetailedTarget(RawTarget):
