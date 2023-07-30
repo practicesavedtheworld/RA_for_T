@@ -1,7 +1,7 @@
+from sqlalchemy import select
+
 from app.backend.dao.dao import BaseDAO
 from app.backend.users.models import Users
-
-from sqlalchemy import select, column, text
 
 
 class UsersDAO(BaseDAO):

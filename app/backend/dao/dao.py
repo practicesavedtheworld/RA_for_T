@@ -1,10 +1,10 @@
 from typing import TypeAlias
 
 import fastapi.exceptions
-from sqlalchemy import select, insert, delete
+from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.backend.database import asynch_session, Base
+from app.backend.database import Base, asynch_session
 from app.backend.targets.exceptions import TaskAlreadyRemoved
 from app.backend.targets.schemas import DeletedTarget
 from app.backend.users.exceptions import NoUserFound

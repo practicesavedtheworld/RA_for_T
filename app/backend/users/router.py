@@ -1,12 +1,14 @@
 from typing import TypeAlias
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, Depends
 from starlette.responses import Response
 
-from app.backend.users.auth import create_hashed_password, authenticate_user, generate_token
+from app.backend.users.auth import (authenticate_user, create_hashed_password,
+                                    generate_token)
 from app.backend.users.dao import UsersDAO
 from app.backend.users.dependencies import get_current_user
-from app.backend.users.exceptions import UsernameAlreadyTaken, WrongUsernameOrPassword
+from app.backend.users.exceptions import (UsernameAlreadyTaken,
+                                          WrongUsernameOrPassword)
 from app.backend.users.models import Users
 from app.backend.users.schemas import UsersScheme
 

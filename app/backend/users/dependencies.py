@@ -3,18 +3,16 @@ from datetime import datetime as dt
 from typing import TypeAlias
 
 from fastapi import Depends
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from starlette.requests import Request
 
 from app.backend.app_logging import create_logger
 from app.backend.configurations import settings
 from app.backend.users.dao import UsersDAO
-from app.backend.users.exceptions import (
-    TokenClosedOrNeverExisted,
-    TokenTimeoutOrWrongSecrets,
-    NoUserFound,
-    ConnectionErrorOrBadRequest,
-)
+from app.backend.users.exceptions import (ConnectionErrorOrBadRequest,
+                                          NoUserFound,
+                                          TokenClosedOrNeverExisted,
+                                          TokenTimeoutOrWrongSecrets)
 from app.backend.users.models import Users
 
 Token: TypeAlias = str

@@ -1,15 +1,16 @@
 import datetime
 import logging
-from typing import Callable, TypeAlias, Any, ParamSpec
+from typing import Any, Callable, ParamSpec, TypeAlias
 
 from pydantic import TypeAdapter
-from sqlalchemy import select, Result, update
+from sqlalchemy import Result, select, update
 
 from app.backend.app_logging import create_logger
 from app.backend.dao.dao import BaseDAO
 from app.backend.targets.exceptions import NoTargetFound
 from app.backend.targets.models import Targets
-from app.backend.targets.schemas import DetailedTarget, RawTarget, UpdatedTarget
+from app.backend.targets.schemas import (DetailedTarget, RawTarget,
+                                         UpdatedTarget)
 
 RESULT_FROM_DB: TypeAlias = Any | None
 P = ParamSpec('P')

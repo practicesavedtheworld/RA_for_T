@@ -1,9 +1,10 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query, Path
+from fastapi import APIRouter, Depends, Path
 
 from app.backend.targets.dao import TargetsDAO
-from app.backend.targets.schemas import RawTarget, DetailedTarget, UpdatedTarget, DeletedTarget
+from app.backend.targets.schemas import (DeletedTarget, DetailedTarget,
+                                         RawTarget, UpdatedTarget)
 from app.backend.users.dependencies import get_current_user
 from app.backend.users.models import Users
 

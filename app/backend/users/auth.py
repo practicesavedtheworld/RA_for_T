@@ -1,12 +1,11 @@
 import logging
 from datetime import datetime, timedelta
 
-from jose import jwt, JWTError
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.backend.configurations import settings
 from app.backend.exceptions.token_exceptions import TokenGenerateAttemptFailed
-
 from app.backend.users.dao import UsersDAO
 from app.backend.users.exceptions import WrongUsernameOrPassword
 from app.backend.users.models import Users
