@@ -56,11 +56,11 @@ def fake_user():
 
 
 @pytest.fixture(scope='class')
-async def authenticated_user():
+async def authenticated_user_session():
     fake_user = get_fake_user()
     # new AsyncClient instance
-    async with AsyncClient(app=fastapi_app, base_url='http://testing/') as a_c:
-        registration = await a_c.post(url="/users/register", json=fake_user.model_dump())
-        login = await a_c.post(url="/users/login", json=fake_user.model_dump())
+    async with AsyncClient(app=fastapi_app, base_url='http://testing/') as session:
+        registration = await session.post(url="/users/register", json=fake_user.model_dump())
+        login = await session.post(url="/users/login", json=fake_user.model_dump())
         assert login.status_code == 200 and registration.status_code == 200
-        yield a_c, fake_user
+        yield session
