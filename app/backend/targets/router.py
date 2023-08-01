@@ -32,7 +32,7 @@ async def new_task(
         title=raw_task.title,
         description=raw_task.description,
     )
-    res = await TargetsDAO.get_by_target_id(target_id=added_task_id)
+    res = await TargetsDAO.get_by_target_id(target_id=int(user_id))
     return res
 
 
