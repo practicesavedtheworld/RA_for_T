@@ -8,8 +8,10 @@ from app.backend.configurations import settings
 from app.backend.targets.models import Targets
 from app.backend.users.models import Users
 from app.backend.database import asynch_session, Base, engine
-from app.backend.users.schemas import UsersScheme
 from main import app as fastapi_app
+from tests.utils import get_fake_user
+
+async_client = AsyncClient(app=fastapi_app, base_url='http://testing/')
 
 
 @pytest.fixture(scope="session")
@@ -38,20 +40,26 @@ async def test_database_clear():
 
 @pytest.fixture(scope='function')
 async def ac():
-    async with AsyncClient(app=fastapi_app, base_url='http://testing/') as a_c:
+    async with async_client as a_c:
         yield a_c
 
 
-@pytest.fixture()
+@pytest.fixture(scope='function')
 async def db_session():
     async with asynch_session() as session:
         yield session
 
 
-@pytest.fixture()
+@pytest.fixture(scope='function')
 def fake_user():
-    fake_user_as_dict = {
-        "username": "1qa",
-        "non_hashed_password": "11"
-    }
-    return UsersScheme(**fake_user_as_dict)
+    return get_fake_user()
+
+
+@pytest.fixture(scope='function')
+async def authenticated_user():
+    fake_user = get_fake_user()
+    async with async_client as a_c:
+        registration = await a_c.post(url="/users/register", json=fake_user.model_dump())
+        login = await a_c.post(url="/users/login", json=fake_user.model_dump())
+        assert login.status_code == 200 and registration.status_code == 200
+        yield a_c, fake_user
