@@ -38,7 +38,7 @@ async def test_database_clear():
         await connection.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='session')
 async def ac():
     async with async_client as a_c:
         yield a_c
@@ -50,15 +50,16 @@ async def db_session():
         yield session
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='session')
 def fake_user():
     return get_fake_user()
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='class')
 async def authenticated_user():
     fake_user = get_fake_user()
-    async with async_client as a_c:
+    # new AsyncClient instance
+    async with AsyncClient(app=fastapi_app, base_url='http://testing/') as a_c:
         registration = await a_c.post(url="/users/register", json=fake_user.model_dump())
         login = await a_c.post(url="/users/login", json=fake_user.model_dump())
         assert login.status_code == 200 and registration.status_code == 200
