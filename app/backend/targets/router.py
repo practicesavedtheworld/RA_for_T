@@ -26,7 +26,8 @@ async def new_task(
     Return to the client more detailed task(target)"""
 
     user_id = user.id
-    added_task_id = await TargetsDAO.add(
+    #  Push task to db
+    await TargetsDAO.add(
         user_id=user_id,
         status=raw_task.status,
         title=raw_task.title,
