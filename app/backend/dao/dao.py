@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.backend.database import Base, asynch_session
 from app.backend.targets.exceptions import TaskAlreadyRemoved
-from app.backend.targets.schemas import DeletedTarget
+from app.backend.targets.schemas import DeletedTarget, RawTarget
 from app.backend.users.exceptions import NoUserFound
 
 SUCCESS_OR_FAILED: TypeAlias = str
@@ -36,6 +36,13 @@ class BaseDAO:
             select_query = select(cls.current_model).filter_by(id=user_id)
             query_result = await session.execute(select_query)
             return query_result.scalar_one_or_none()
+
+    @classmethod
+    async def find_all_raw_task(cls, target: RawTarget):
+        async with cls.session_ as session:
+            select_query = select(cls.current_model.id).filter_by(**target.model_dump())
+            query_result = await session.execute(select_query)
+            return query_result.scalar()
 
     @classmethod
     async def delete_task_by_task_id(
