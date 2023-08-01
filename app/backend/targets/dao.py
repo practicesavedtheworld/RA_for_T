@@ -107,9 +107,10 @@ class TargetsDAO(BaseDAO):
             return adapter
 
     @classmethod
+    @database_result_validator(critical=False)
     async def find_all_by_id(cls, id_: int, limit: int = None) -> list[DetailedTarget]:
         """Selects all tasks(targets) for a specific user.
-        As a result, it includes only 5 fields required by the assignment"""
+        As a result, it includes only [limit] fields required by the assignment"""
 
         async with cls.session_ as session:
             query = (
