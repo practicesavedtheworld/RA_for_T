@@ -16,9 +16,9 @@ def get_fake_user() -> UsersScheme:
 
 
 def get_fake_raw_target(
-        title: str = fake.word(),
-        description: str = fake.text(max_nb_chars=88),
-        status: str = "new",
+    title: str = fake.word(),
+    description: str = fake.text(max_nb_chars=88),
+    status: str = "new",
 ) -> RawTarget:
     target = {
         "title": title,

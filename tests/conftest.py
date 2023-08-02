@@ -1,17 +1,17 @@
 import asyncio
-from httpx import AsyncClient
 
 import pytest
+from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncConnection
 
 from app.backend.configurations import settings
 from app.backend.targets.models import Targets
 from app.backend.users.models import Users
-from app.backend.database import asynch_session, Base, engine
+from app.backend.database import Base, asynch_session, engine
 from main import app as fastapi_app
 from tests.utils import get_fake_user
 
-async_client = AsyncClient(app=fastapi_app, base_url='http://testing/')
+async_client = AsyncClient(app=fastapi_app, base_url="http://testing/")
 
 
 @pytest.fixture(scope="session")
@@ -22,7 +22,7 @@ def event_loop():
     loop.close()
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope="class")
 async def test_database_preparation():
     assert settings.MODE == "TEST"
 
@@ -38,29 +38,31 @@ async def test_database_clear():
         await connection.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 async def ac():
     async with async_client as a_c:
         yield a_c
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 async def db_session():
     async with asynch_session() as session:
         yield session
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def fake_user():
     return get_fake_user()
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(scope="class")
 async def authenticated_user_session():
     fake_user = get_fake_user()
     # new AsyncClient instance
-    async with AsyncClient(app=fastapi_app, base_url='http://testing/') as session:
-        registration = await session.post(url="/users/register", json=fake_user.model_dump())
+    async with AsyncClient(app=fastapi_app, base_url="http://testing/") as session:
+        registration = await session.post(
+            url="/users/register", json=fake_user.model_dump()
+        )
         login = await session.post(url="/users/login", json=fake_user.model_dump())
         assert login.status_code == 200 and registration.status_code == 200
         yield session
