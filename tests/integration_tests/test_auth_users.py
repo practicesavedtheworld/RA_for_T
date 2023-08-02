@@ -5,15 +5,19 @@ from app.backend.users.models import Users
 
 
 class TestUserAuthentication:
-
-    @pytest.mark.parametrize("status", [
-        200,
-        409,
-    ])
-    async def test_new_user_registration(self, status, test_database_preparation, ac, fake_user):
+    @pytest.mark.parametrize(
+        "status",
+        [
+            200,
+            409,
+        ],
+    )
+    async def test_new_user_registration(
+        self, status, test_database_preparation, ac, fake_user
+    ):
         """Test user registration two times"""
 
-        registration = await ac.post(url='/users/register', json=fake_user.model_dump())
+        registration = await ac.post(url="/users/register", json=fake_user.model_dump())
         assert registration.status_code == status
 
     async def test_login(self, ac, db_session, fake_user):
