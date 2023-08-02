@@ -5,7 +5,6 @@ from app.backend.configurations import settings
 
 if settings.MODE == "TEST":
     DB_URL = settings.TEST_DB_URL
-
 else:
     DB_URL = settings.DB_URL
 

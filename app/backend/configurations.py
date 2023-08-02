@@ -27,6 +27,10 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str
 
+    POSTGRES_DB: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+
     model_config = SettingsConfigDict(
         env_file=[f"{BASE_DIR}/fake_env_file.txt", f"{BASE_DIR}/.env"]
     )
