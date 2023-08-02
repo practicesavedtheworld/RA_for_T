@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: database
+    restart: always
+    env_file:
+      - fake_env_file.txt
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network
+
+  pytest:
+    build:
+      context: .
+    container_name: pytest_runner
+    env_file:
+      - fake_env_file.txt
+    depends_on:
+      - db
+    volumes:
+      - ./tests:/app/tests
+    command: pytest tests/integration_tests/ -v -s --disable-warnings
+    networks:
+      - app_network
+
+  assignment_rest_api:
+    build:
+      context: .
+    container_name: application_1
+    ports:
+      - "3000:8000"
+    env_file:
+      - fake_env_file.txt
+    depends_on:
+      - db
+      - pytest
+    command: [ "./app_dep.sh" ]
+    networks:
+      - app_network
+networks:
+  app_network:
