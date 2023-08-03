@@ -1,7 +1,7 @@
 # REST API FOR TEST ASSIGNMENT
 
 <details>
-  <summary> TEST ASSIGNMENT </summary>
+  <summary>  :pencil2: TEST ASSIGNMENT </summary>
   
   <h1>Exercise:</h1>
 
