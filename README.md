@@ -149,7 +149,7 @@ docker compose up --build
 
 ### INFO OR IF SOMETHING GOING WRONG
 
-Since in this project i used default port(5432) for setting up the database, it might call some problem if you have already enabled postgresql localy.
+Since in this project I used default port(5432) for setting up the database, it might call some problem if you have already enabled postgresql localy.
 
 You may see something like that ![err port](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/e663216a-4a07-4a93-93b9-022230c58658)
 
@@ -175,6 +175,7 @@ sudo systemctl stop postgresql-15
 net stop postgresql-x64-15
 ```
 
+##
 
 
 ## Requirement 
@@ -184,6 +185,8 @@ Everything related you can find in official site:
 
 
 https://www.docker.com
+
+##
 
 ## Description & Explanation
 
@@ -235,6 +238,8 @@ To delete a task, send a DELETE request to /tasks/{task_id} with the task ID in 
 
 
 The API has been deployed in a Docker container using Docker Compose. PostgreSQL was used for data storage using SQLAlchemy. For automated testing, tests were written using pytest. Alembic was used to manage database migrations.
+
+##
 
 ## Run docker compose
 
