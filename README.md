@@ -141,10 +141,18 @@ After running the docker build and docker-compose up commands, the application s
 
 # Getting started
 
+## Quick run
+
+```sh
+docker compose up --build
+```
+![demo](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/39f2c0ea-43b5-4f04-b1a9-a84e4e7ff672)
+
+
 ## Requirement 
 
 The only things you need is installed Docker and docker compose plugin.
-Everything you can find in official site:
+Everything related you can find in official site:
 
 
 https://www.docker.com
@@ -159,17 +167,24 @@ That choice explained by that the every client will recieved similar tasks.
 <pre> For access to api you need register or login first</pre>
 
 
-Every authenticated user get unique token, that has life duration 60 minutes. Token stored in cockies. Token type is <a href="https://jwt.io/introduction"> JWT</a>
+Every authenticated user get unique token, that has life duration 60 minutes. Token stored in cookies. Token type is <a href="https://jwt.io/introduction"> JWT</a>
+
 After authentication API is available.
+
+![api_screeen](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/df5b1f5a-f918-47a3-8b4d-9db70ed58625)
 
 ##
 
 The API provides the following endpoints:
 
 POST /tasks - create a new task.
+
 GET /tasks - get a list of all tasks.
+
 PUT /tasks/{task_id} - task update.
+
 DELETE /tasks/{task_id} - delete a task.
+
 
 To create a new task, send a POST request to /tasks with a request body in JSON format containing the title, description, and status of the task. If the task is successfully created, the response will return a JSON object with the task ID, title, description, status, and creation date.
 
@@ -180,6 +195,20 @@ To update a task, send a PUT request to /tasks/{task_id} with the task ID in the
 To delete a task, send a DELETE request to /tasks/{task_id} with the task ID in the request path. The response will be a JSON object with the issue ID, title, description, status, creation date, update date, and delete date.
 
 The API has been deployed in a Docker container using Docker Compose. PostgreSQL was used for data storage using SQLAlchemy. For automated testing, tests were written using pytest. Alembic was used to manage database migrations.
+
+## Run docker compose
+
+If project logic is fully understanded and docker already installed, you can start application by following command:
+
+```sh
+docker compose up --build
+```
+
+
+Now you can use it =)
+
+[demo.webm](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/631636b0-db08-4d6a-8e45-23a6e83d2c09)
+
 
 
 
