@@ -185,11 +185,23 @@ DELETE /tasks/{task_id} - delete a task.
 
 To create a new task, send a POST request to /tasks with a request body in JSON format containing the title, description, and status of the task. If the task is successfully created, the response will return a JSON object with the task ID, title, description, status, and creation date.
 
+![post demo](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/8c961b4b-8f34-4349-971c-d5002f9f4eba)
+
+
 To get a list of all tasks, send a GET request to /tasks with an optional limit parameter that specifies the maximum number of tasks that will be returned in the response. The response will contain a JSON object containing the number of tasks and a list of tasks with their IDs, titles, descriptions, statuses, and creation dates.
+
+![get demo](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/57addac3-a4f7-4fdd-b896-2d3d38ec7a0f)
+
 
 To update a task, send a PUT request to /tasks/{task_id} with the task ID in the request path and the request body in JSON format containing the new task title, description, and status values. The response will contain a JSON object with the issue ID, new title, description, status, creation date, and update date.
 
+![put demo](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/be572e07-f708-40f7-a215-a3659ab75065)
+
+
 To delete a task, send a DELETE request to /tasks/{task_id} with the task ID in the request path. The response will be a JSON object with the issue ID, title, description, status, creation date, update date, and delete date.
+
+![delete demo](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/4ecfc7fd-20ab-47c0-b72e-1e062cafcffc)
+
 
 The API has been deployed in a Docker container using Docker Compose. PostgreSQL was used for data storage using SQLAlchemy. For automated testing, tests were written using pytest. Alembic was used to manage database migrations.
 
