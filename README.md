@@ -145,6 +145,36 @@ docker compose up --build
 ```
 ![demo](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/39f2c0ea-43b5-4f04-b1a9-a84e4e7ff672)
 
+#
+
+### INFO OR IF SOMETHING GOING WRONG
+
+Since in this project i used default port(5432) for setting up the database, it might call some problem if you have already enabled postgresql localy.
+
+You may see something like that ![port error](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/e8f2a355-86ea-4a33-8a1d-18d76deeddb5)
+
+There is 2 way how to avoid problem:
+1) Change port to 5433:5432 in docker-compose.yaml in field ![portss](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/47903766-7ae2-4dc6-a5d0-892361b29ae2)
+2) Use the following command:
+##
+
+#### Linux
+  ```sh
+sudo systemctl stop postgresql-<version>
+```
+For example for postgres15 i might use
+```sh
+sudo systemctl stop postgresql-15
+```
+##
+
+#### Windows
+
+```sh
+net stop postgresql-x64-15
+```
+
+
 
 ## Requirement 
 
