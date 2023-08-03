@@ -1,6 +1,4 @@
-# RA_for_T
-Temporarly no description
-
+# REST API FOR TEST ASSIGNMENT
 
 <details>
   <summary> TEST ASSIGNMENT </summary>
@@ -15,7 +13,6 @@ Required: Python 3.x, FastAPI, PostgreSQL (using SQLAlchemy) and Docker Compose.
 
 You need to implement the following endpoints:
 $${\color{green}POST }$$<pre> /tasks</pre>
-
 
 
 Create a new task.
@@ -205,9 +202,9 @@ docker compose up --build
 ```
 
 
-Now you can use it =)
-
 [demo.webm](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/631636b0-db08-4d6a-8e45-23a6e83d2c09)
+
+Now you can use it =)
 
 
 
