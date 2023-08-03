@@ -151,7 +151,8 @@ docker compose up --build
 
 Since in this project i used default port(5432) for setting up the database, it might call some problem if you have already enabled postgresql localy.
 
-You may see something like that ![port error](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/e8f2a355-86ea-4a33-8a1d-18d76deeddb5)
+You may see something like that ![err port](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/e663216a-4a07-4a93-93b9-022230c58658)
+
 
 There is 2 way how to avoid problem:
 1) Change port to 5433:5432 in docker-compose.yaml in field ![portss](https://github.com/practicesavedtheworld/RA_for_T/assets/105741091/47903766-7ae2-4dc6-a5d0-892361b29ae2)
